@@ -21,7 +21,13 @@ button.accordion {
   font-size: 18px;
   color: #333;
   cursor: pointer;
-  transition: background-color 0.2s linear;
+  transition: background-color 0.2s linear, box-shadow 0.2s;
+}
+
+button.accordion:focus {
+  background-color: #e6f7ff; /* Light blue background */
+  box-shadow: 0 0 5px rgba(0, 120, 212, 0.5); /* Glow effect */
+  border-radius: 4px; /* Optional: Add rounded corners for focus state */
 }
 
 button.accordion:after {

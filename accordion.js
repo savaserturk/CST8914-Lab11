@@ -11,20 +11,47 @@
 
 const accordionBtns = document.querySelectorAll(".accordion");
 
+function toggleAccordion(button) {
+  button.classList.toggle("is-open");
+
+  let content = button.nextElementSibling;
+
+  if (content.style.maxHeight) {
+    // If the accordion is open
+    content.style.maxHeight = null;
+    button.setAttribute("aria-expanded", "false");
+  } else {
+    // If the accordion is closed
+    content.style.maxHeight = content.scrollHeight + "px";
+    button.setAttribute("aria-expanded", "true");
+  }
+}
+
 accordionBtns.forEach((accordion) => {
+  accordion.setAttribute("aria-expanded", "false");
+  accordion.setAttribute("tabindex", "0"); // Make buttons focusable
+
+  // Handle mouse click
   accordion.onclick = function () {
-    this.classList.toggle("is-open");
-
-    let content = this.nextElementSibling;
-    console.log(content);
-
-    if (content.style.maxHeight) {
-      //this is if the accordion is open
-      content.style.maxHeight = null;
-    } else {
-      //if the accordion is currently closed
-      content.style.maxHeight = content.scrollHeight + "px";
-      console.log(content.style.maxHeight);
-    }
+    toggleAccordion(this);
   };
+   // Handle keyboard events
+   accordion.onkeydown = function (event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault(); // Prevent default scroll behavior for space key
+      toggleAccordion(this);
+    } else if (event.key === "ArrowDown") {
+      event.preventDefault();
+      const nextAccordion = this.nextElementSibling?.nextElementSibling; // Skip the content div
+      if (nextAccordion && nextAccordion.classList.contains("accordion")) {
+        nextAccordion.focus();
+      }
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      const previousAccordion = this.previousElementSibling?.previousElementSibling; // Skip the content div
+      if (previousAccordion && previousAccordion.classList.contains("accordion")) {
+        previousAccordion.focus();
+      }
+    }
+  }
 });
